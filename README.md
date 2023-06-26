@@ -6,7 +6,7 @@ Wordle is a game for smart people, which... I am not... So here is a small app I
 
 ## Where to Play Wordle
 
-You can play Daily Wordle by NY Times [Here](https://www.nytimes.com/games/wordle/index.html) \nOr you can play Wordle Infinitely [Here](https://wordlegame.org/)
+You can play Daily Wordle by NY Times [Here](https://www.nytimes.com/games/wordle/index.html)<br.>Or you can play Wordle Infinitely [Here](https://wordlegame.org/)
 
 ## How To Use?
 

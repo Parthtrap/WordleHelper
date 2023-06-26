@@ -1,12 +1,18 @@
 import React, { useEffect } from "react";
+import axios from "axios";
 
 function App() {
-	const [possibleWords, setPossibleWords] = React.useState(["EARTH"]);
-	const [selectedColor, setSelectedColor] = React.useState("gray");
+	const [possibleWords, setPossibleWords] = React.useState(["LOADING..."]);
+	const [selectedColor, setSelectedColor] = React.useState("grey");
 	const [selectedCharacter, setSelectedCharacter] = React.useState("A");
 	const [selectedPosition, setSelectedPosition] = React.useState("1");
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		axios.get("http://localhost:8000").then((res) => {
+			console.log(res.data);
+			setPossibleWords(res.data);
+		});
+	}, []);
 
 	const handleColorChange = (event) => {
 		console.log(event.target.value);
@@ -32,13 +38,44 @@ function App() {
 			console.log(selectedPosition);
 		}
 	};
+
+	const handleSubmit = () => {
+		const options = {
+			headers: { "X-Custom-Header": "value" },
+		};
+		axios
+			.post(
+				"http://localhost:8000",
+				{
+					color: selectedColor,
+					character: selectedCharacter,
+					position: selectedPosition,
+				},
+				options
+			)
+			.then((res) => {
+				console.log(res.data);
+				setPossibleWords(res.data);
+			});
+	};
+
+	const handleReset = () => {
+		axios.get("http://localhost:8000/reset").then((res) => {
+			console.log(res.data);
+			setPossibleWords(res.data);
+		});
+	};
+
 	return (
 		<>
-			<div class="grid grid-cols-3">
-				<div class="col-span-2 flex flex-wrap">
+			<div className="grid grid-cols-5">
+				<div className="col-span-4 flex flex-wrap h-screen overflow-scroll">
 					{possibleWords.map((element) => {
 						return (
-							<div className="m-3 bg-slate-300 shadow-sm text-center rounded-full w-20 h-fit">
+							<div
+								key={element}
+								className="m-3 bg-slate-300 shadow-sm text-center rounded-full w-24 h-fit"
+							>
 								{element}
 							</div>
 						);
@@ -50,12 +87,12 @@ function App() {
 						<label>
 							<input
 								type="radio"
-								value="gray"
+								value="grey"
 								className="mr-2"
-								checked={selectedColor === "gray"}
+								checked={selectedColor === "grey"}
 								onChange={handleColorChange}
 							/>
-							Gray
+							Grey
 						</label>
 						<br />
 						<label>
@@ -95,16 +132,25 @@ function App() {
 						<span className="text-lg font-bold mr-2">Position</span>
 						<input
 							type="text"
+							disabled={selectedColor == "grey" ? true : false}
 							className="border-2 border-black rounded-full w-10 text-center"
-							value={selectedPosition}
+							value={
+								selectedColor == "grey" ? "-" : selectedPosition
+							}
 							onChange={handlePositionChange}
 						/>
 					</div>
 
-					<button className="border-2 border-black rounded-full px-2 mx-2">
+					<button
+						className="border-2 border-black rounded-full px-2 mx-2"
+						onClick={handleSubmit}
+					>
 						Submit
 					</button>
-					<button className="border-2 border-black rounded-full px-2">
+					<button
+						className="border-2 border-black rounded-full px-2"
+						onClick={handleReset}
+					>
 						Reset
 					</button>
 				</div>

@@ -66,6 +66,12 @@ function App() {
 		});
 	};
 
+	const handleUndo = () => {
+		axios.get("http://localhost:8000/undo").then((res) => {
+			console.log(res.data);
+			setPossibleWords(res.data);
+		});
+	};
 	return (
 		<>
 			<div className="grid grid-cols-5">
@@ -140,19 +146,26 @@ function App() {
 							onChange={handlePositionChange}
 						/>
 					</div>
-
-					<button
-						className="border-2 border-black rounded-full px-2 mx-2"
-						onClick={handleSubmit}
-					>
-						Submit
-					</button>
-					<button
-						className="border-2 border-black rounded-full px-2"
-						onClick={handleReset}
-					>
-						Reset
-					</button>
+					<div className="flex flex-wrap">
+						<button
+							className="border-2 border-black rounded-full px-2"
+							onClick={handleSubmit}
+						>
+							Submit
+						</button>
+						<button
+							className="border-2 border-black rounded-full px-2 mx-2"
+							onClick={handleUndo}
+						>
+							Undo
+						</button>
+						<button
+							className="border-2 border-black rounded-full px-2"
+							onClick={handleReset}
+						>
+							Reset
+						</button>
+					</div>
 				</div>
 			</div>
 		</>

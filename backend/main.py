@@ -19,6 +19,7 @@ OriginalData = data.split("\n")
 my_file.close()
 
 CurrentData = OriginalData
+LastData = CurrentData
 
 def greyColor(data : dict, CurrentData):
    finalData = []
@@ -55,9 +56,11 @@ async def index():
 
 @app.post("/")
 async def eleminate(data: dict):
+   global CurrentData
+   global LastData
+   LastData = CurrentData
    match(data['color']):
       case 'grey':
-         global CurrentData
          CurrentData = greyColor(data, CurrentData)
       case 'green':
          CurrentData = greenColor(data, CurrentData)
@@ -68,5 +71,14 @@ async def eleminate(data: dict):
 
 @app.get("/reset")
 async def reset():
+   global OriginalData
+   global CurrentData
    CurrentData = OriginalData
+   return CurrentData
+
+@app.get("/undo")
+async def reset():
+   global LastData
+   global CurrentData
+   CurrentData = LastData
    return CurrentData
